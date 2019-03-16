@@ -23,9 +23,12 @@ class _OffersListState extends State<OffersList> {
   @override
   Widget build(BuildContext ctxt) {
     return new Scaffold(
-        body: new ListView.builder(
+        body: new ListView.separated(
+      separatorBuilder: (context, index) => Divider(
+            color: Colors.black,
+          ),
       itemCount: ListItems.length,
-      itemBuilder: (BuildContext ctx, int index) {
+      itemBuilder: (BuildContext context, int index) {
         return new OfferListItem(
           item: ListItems[index],
           itemId: index.toString(),
@@ -59,20 +62,38 @@ class OfferListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Text(DateFormat.Hm().format(item.time)),
-        MaterialButton(
-          child: Icon(Icons.check),
-          onPressed: () => this.callback(itemId, OfferInteraction.accept),
-        ),
-        MaterialButton(
-            child: Icon(Icons.clear),
-            onPressed: () => this.callback(
-                  itemId,
-                  OfferInteraction.reject,
-                )),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Container(
+            width: 100,
+            alignment: Alignment.center,
+            child: Text(
+              DateFormat.Hm().format(item.time),
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.w300),
+            ),
+          ),
+          Container(
+            width: 30,
+            height: 30,
+            child: FlatButton(
+                textColor: Colors.red[500],
+                child: Icon(Icons.clear),
+                onPressed: () => this.callback(
+                      itemId,
+                      OfferInteraction.reject,
+                    )),
+          ),
+          MaterialButton(
+            color: Colors.green[900],
+            textColor: Colors.white,
+            child: Icon(Icons.check),
+            onPressed: () => this.callback(itemId, OfferInteraction.accept),
+          ),
+        ],
+      ),
     );
   }
 }
